@@ -5,7 +5,7 @@ This repo is for my text exploratory data analysis (EDA).
 - [x] Word counts (This can be done without SpaCy.)
 - [ ] Part of speech counts (SpaCy)
 - [ ] Number of documents 
-- [ ] Number of sentences (SpaCy or another library)
+- [x] Number of sentences (SpaCy or another library)
 - [ ] Top N entities (SpaCy)
 - [ ] Top N part of speech and words (SpaCy)
 - [ ] Sentiment distribution from each document (NLTK)
