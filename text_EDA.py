@@ -3,7 +3,39 @@ import embeddings
 import clustering
 import spacy
 import pandas as pd
+from deepsegment import DeepSegment
+segmenter = DeepSegment('en')
 
+def split_into_sentences(utterance):
+    """
+    Splits a string or SpaCy doc into sentences.
+    
+    (You must include 'setencizer' in the SpaCy NLP pipeline 
+    so that you can split the sentences out.)
+    
+    :utterance: string of text or SpaCy doc
+    :return: list of strings or SpaCy spans of sentences.
+    """
+    if isinstance(utterance, str):
+        if len(utterance) < 1:
+            return ['']
+        elif len(utterance) > 200:
+            sents = segmenter.segment_long(utterance,n_window=10)
+        else:
+            sents = segmenter.segment(utterance)
+        return sents
+    else:
+        return [sentence for sentence in utterance.sents]
+
+def get_sentence_count(utterance):
+    """
+    Gets the number of sentences in a given utterance.
+
+    :utterance: string of text or SpaCy doc
+    :return: and integer >= 0 indicating the number of sentences.
+    """
+    return len(split_into_sentences(utterance))
+    
 def get_word_count(utterance):
     """
     This function counts the number of word tokens in an utterance.
@@ -15,6 +47,8 @@ def get_word_count(utterance):
         return sum(1 for word in utterance.split())
     else: 
         return sum(1 for word in utterance.text.split())
+
+
 
 class text_EDA():
 
