@@ -2,6 +2,7 @@ import TextPreprocessing
 import embeddings
 import clustering
 import spacy
+import pandas as pd
 
 def get_word_count(utterance):
     """
@@ -10,15 +11,15 @@ def get_word_count(utterance):
     :utterance: string of text
     :return: integer >= 0 for the total number of tokens
     """
-    
-    return sum(1 for word in utterance.split())
+    if isinstance(utterance, str):
+        return sum(1 for word in utterance.split())
+    else: 
+        return sum(1 for word in utterance.text.split())
 
 class text_EDA():
 
     def __init__(self, utterances, pipes = ['entity_ruler', 'sentencizer']) -> None:
-            self.raw_utterances = utterances
-            self.cleaned_utterances = self.raw_utterances
-            self.nlp_utterances = None
+            self.data = pd.DataFrame(utterances, columns=['Raw Utterances'])
 
             # Load SpaCy model
             self.nlp = spacy.load('en_core_web_sm')
@@ -40,3 +41,6 @@ class text_EDA():
                 self.nlp.add_pipe(nlp_pipe, before='parser')
             else:
                 self.nlp.add_pipe(nlp_pipe)
+
+    def explore(self):
+        self.data['Word Counts'] = map(get_word_count, self.data['Raw Utterances'])
