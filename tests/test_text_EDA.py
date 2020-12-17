@@ -17,5 +17,12 @@ class test_embeddings(unittest.TestCase):
         text_EDA = self._get_module('text_EDA')
         self.assertEqual(text_EDA.get_word_count(TEST_UTTERANCES[0]), 5)
 
+    def test_load_nlp_pipe(self):
+        """Tests that the nlp pipe has been set up correctly."""
+        text_EDA = self._get_module('text_EDA')
+        explorer = text_EDA.text_EDA(TEST_UTTERANCES)
+        self.assertEqual(explorer.nlp.pipe_names, \
+             ['tagger', 'sentencizer', 'parser', 'ner', 'entity_ruler']) 
+
 if __name__ == '__main__':
     unittest.main()
