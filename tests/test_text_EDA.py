@@ -5,7 +5,7 @@ TEST_UTTERANCES = (
     , 'This is a similar test phrase.'
     , 'Nothing to do with the others.'
     , 'This is a multi-sentence phrase. I want to know if I can split them.'
-    , 'This is another test sentence I want to test whether I can split them when there is no punctuation'
+    , 'This is another test sentence for me I want to test whether I can split them when there is no punctuation'
 )
 
 class test_embeddings(unittest.TestCase):
