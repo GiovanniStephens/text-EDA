@@ -77,7 +77,7 @@ class text_EDA():
 
     def explore(self):
         if self.nlp_utterances == None:
-            self.nlp_utterances = self.nlp.pipe(self.data['Raw Utterances'])
-        self.data['Sentence Counts'] = map(get_sentence_count, self.nlp_utterances)
-        self.data['Word Counts'] = map(get_word_count, self.nlp_utterances)
+            self.nlp_utterances = list(self.nlp.pipe(self.data['Raw Utterances']))
+        self.data['Sentence Counts'] = list(map(get_sentence_count, self.nlp_utterances))
+        self.data['Word Counts'] = list(map(get_word_count, self.nlp_utterances))
         
