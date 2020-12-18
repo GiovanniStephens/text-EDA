@@ -5,6 +5,7 @@ TEST_UTTERANCES = (
     , 'This is a similar test phrase.'
     , 'Nothing to do with the others.'
     , 'This is a multi-sentence phrase. I want to know if I can split them.'
+    , 'This is another test sentence I want to test whether I can split them when there is no punctuation'
 )
 
 class test_embeddings(unittest.TestCase):
@@ -39,6 +40,12 @@ class test_embeddings(unittest.TestCase):
         sents = text_EDA.split_into_sentences(TEST_UTTERANCES[3])
         self.assertEqual(len(sents), 2)
 
+    def test_split_into_sentences_str_2(self):
+        """Test deepsegment to split a string without punctuation into parts."""
+        text_EDA = self._get_module('text_EDA')
+        sents = text_EDA.split_into_sentences(TEST_UTTERANCES[4])
+        self.assertEqual(len(sents), 2)
+
     def test_split_into_sentences(self):
         """Test SpaCy's ability to split a string into parts."""
         text_EDA = self._get_module('text_EDA')
@@ -58,6 +65,13 @@ class test_embeddings(unittest.TestCase):
         explorer = text_EDA.text_EDA(TEST_UTTERANCES)
         cnt = text_EDA.get_sentence_count(explorer.data['Raw Utterances'].iloc[3])
         self.assertEqual(cnt, 2)
+
+    def test_explore_sentence_count(self):
+        """Tests that the explore function is getting the sentence counts."""
+        text_EDA = self._get_module('text_EDA')
+        explorer = text_EDA.text_EDA(TEST_UTTERANCES)
+        explorer.explore()
+        self.assertEqual(explorer.data['Sentence Counts'].iloc[3],2)
 
 if __name__ == '__main__':
     unittest.main()
