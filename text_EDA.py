@@ -48,12 +48,11 @@ def get_word_count(utterance):
     else: 
         return sum(1 for word in utterance.text.split())
 
-
-
 class text_EDA():
 
     def __init__(self, utterances, pipes = ['entity_ruler', 'sentencizer']) -> None:
             self.data = pd.DataFrame(utterances, columns=['Raw Utterances'])
+            self.nlp_utterances = None
 
             # Load SpaCy model
             self.nlp = spacy.load('en_core_web_sm')
@@ -77,4 +76,8 @@ class text_EDA():
                 self.nlp.add_pipe(nlp_pipe)
 
     def explore(self):
-        self.data['Word Counts'] = map(get_word_count, self.data['Raw Utterances'])
+        if self.nlp_utterances == None:
+            self.nlp_utterances = self.nlp.pipe(self.data['Raw Utterances'])
+        self.data['Sentence Counts'] = map(get_sentence_count, self.nlp_utterances)
+        self.data['Word Counts'] = map(get_word_count, self.nlp_utterances)
+        
