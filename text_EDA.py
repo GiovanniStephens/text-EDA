@@ -93,4 +93,4 @@ class text_EDA():
             self.nlp_utterances = list(self.nlp.pipe(self.data['Raw Utterances']))
         self.data['Sentence Counts'] = list(map(get_sentence_count, self.nlp_utterances))
         self.data['Word Counts'] = list(map(get_word_count, self.nlp_utterances))
-        
+        self.data['Word Densities'] = list(map(get_word_density, self.nlp_utterances))
