@@ -48,6 +48,14 @@ def get_word_count(utterance):
     else: 
         return sum(1 for word in utterance.text.split())
 
+def get_word_density(utterance):
+    total_characters = 0
+    for token in utterance:
+        if not token.is_punct and token.is_alpha:
+            total_characters += len(token.text)
+    return total_characters / get_word_count(utterance)
+
+
 class text_EDA():
 
     def __init__(self, utterances, pipes = ['entity_ruler', 'sentencizer']) -> None:
