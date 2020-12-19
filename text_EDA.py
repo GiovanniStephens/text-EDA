@@ -49,6 +49,11 @@ def get_word_count(utterance):
         return sum(1 for word in utterance.text.split())
 
 def get_word_density(utterance):
+    """Calculates the average length of the words in the utterance.
+
+    :utterance: string of text
+    :return: integer >= 0 for the average word length.
+    """
     total_characters = 0
     for token in utterance:
         if not token.is_punct and token.is_alpha:
