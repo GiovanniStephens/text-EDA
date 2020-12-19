@@ -6,6 +6,7 @@ TEST_UTTERANCES = (
     , 'Nothing to do with the others.'
     , 'This is a multi-sentence phrase. I want to know if I can split them.'
     , 'This is another test sentence for me I want to test whether I can split them when there is no punctuation'
+    , 'My dr. is testing me.'
 )
 
 class test_embeddings(unittest.TestCase):
@@ -72,6 +73,23 @@ class test_embeddings(unittest.TestCase):
         explorer = text_EDA.text_EDA(TEST_UTTERANCES)
         explorer.explore()
         self.assertEqual(explorer.data['Sentence Counts'].iloc[3],2)
+
+    def test_get_word_density(self):
+        """Tests getting the average word length for an utterance."""
+        text_EDA = self._get_module('text_EDA')
+        explorer = text_EDA.text_EDA(TEST_UTTERANCES)
+        explorer.explore()
+        self.assertEqual(text_EDA.get_word_density(\
+            explorer.nlp_utterances[0]), 3.8)
+
+    def test_get_word_density_2(self):
+        """Tests getting the average word length for an utterance.
+        It should not include punctuation in that count."""
+        text_EDA = self._get_module('text_EDA')
+        explorer = text_EDA.text_EDA(TEST_UTTERANCES)
+        explorer.explore()
+        self.assertEqual(text_EDA.get_word_density(\
+            explorer.nlp_utterances[5]), 3)
 
 if __name__ == '__main__':
     unittest.main()
