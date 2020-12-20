@@ -7,6 +7,7 @@ TEST_UTTERANCES = (
     , 'This is a multi-sentence phrase. I want to know if I can split them.'
     , 'This is another test sentence for me I want to test whether I can split them when there is no punctuation'
     , 'My dr. is testing me.'
+    , 'He owes me $200 bucks!'
 )
 
 class test_embeddings(unittest.TestCase):
@@ -97,6 +98,30 @@ class test_embeddings(unittest.TestCase):
         explorer = text_EDA.text_EDA(TEST_UTTERANCES)
         explorer.explore()
         self.assertEqual(explorer.data['Word Densities'].iloc[5],3)
+
+    def test_get_punctuation_count(self):
+        """Tests that it is capturing the period at the end of the sentence."""
+        text_EDA = self._get_module('text_EDA')
+        explorer = text_EDA.text_EDA(TEST_UTTERANCES)
+        explorer.explore()
+        self.assertEqual(text_EDA.get_punctuation_count(\
+            explorer.nlp_utterances[0]), 1)
+
+    def test_get_punctuation_count_2(self):
+        """Tests that the punctuation after the dr is also counted."""
+        text_EDA = self._get_module('text_EDA')
+        explorer = text_EDA.text_EDA(TEST_UTTERANCES)
+        explorer.explore()
+        self.assertEqual(text_EDA.get_punctuation_count(\
+            explorer.nlp_utterances[5]), 2)
+
+    def test_get_punctuation_count_3(self):
+        """Tests that $ signs are not counted as punctuation."""
+        text_EDA = self._get_module('text_EDA')
+        explorer = text_EDA.text_EDA(TEST_UTTERANCES)
+        explorer.explore()
+        self.assertEqual(text_EDA.get_punctuation_count(\
+            explorer.nlp_utterances[6]), 1)
 
 if __name__ == '__main__':
     unittest.main()
