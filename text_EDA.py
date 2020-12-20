@@ -40,7 +40,7 @@ def get_word_count(utterance):
     """
     This function counts the number of word tokens in an utterance.
 
-    :utterance: string of text
+    :utterance: string of text or SpaCy doc 
     :return: integer >= 0 for the total number of tokens
     """
     if isinstance(utterance, str):
@@ -51,7 +51,7 @@ def get_word_count(utterance):
 def get_word_density(utterance):
     """Calculates the average length of the words in the utterance.
 
-    :utterance: string of text
+    :utterance: SpaCy doc
     :return: integer >= 0 for the average word length.
     """
     total_characters = 0
@@ -60,6 +60,14 @@ def get_word_density(utterance):
             total_characters += len(token.text)
     return total_characters / get_word_count(utterance)
 
+def get_punctuation_count(utterance):
+    """
+    Returns the number of punctuations in the input utterance.
+
+    :utterance: SpaCy doc
+    :return: integer >= 0 for the number of punctuations.
+    """
+    return sum([1 for token in utterance if token.is_punct])
 
 class text_EDA():
 
