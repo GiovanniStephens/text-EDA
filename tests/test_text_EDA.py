@@ -131,12 +131,29 @@ class test_embeddings(unittest.TestCase):
         self.assertEqual(explorer.data['Punctuation Counts'].iloc[5], 2)
 
     def test_get_uppercase_count(self):
-        """Tests that I get the right number of upper case letters."""
+        """Tests that I get the right number of uppercase letters."""
         text_EDA = self._get_module('text_EDA')
         explorer = text_EDA.text_EDA(TEST_UTTERANCES)
         explorer.explore()
         self.assertEqual(text_EDA.get_uppercase_count(\
             explorer.nlp_utterances[3]), 3)
+
+    def test_get_lowercase_count(self):
+        """Tests that I get the right number of lowercase letters."""
+        text_EDA = self._get_module('text_EDA')
+        explorer = text_EDA.text_EDA(TEST_UTTERANCES)
+        explorer.explore()
+        self.assertEqual(text_EDA.get_lowercase_count(\
+            explorer.nlp_utterances[0]), 18)
+
+    def test_get_case_ratio(self):
+        """Tests that I am getting the right uppercase to lowercase
+        ratio."""
+        text_EDA = self._get_module('text_EDA')
+        explorer = text_EDA.text_EDA(TEST_UTTERANCES)
+        explorer.explore()
+        self.assertEqual(text_EDA.get_case_ratio(\
+            explorer.nlp_utterances[0]), 1/19)
 
 if __name__ == '__main__':
     unittest.main()
