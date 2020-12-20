@@ -70,7 +70,22 @@ def get_punctuation_count(utterance):
     return sum([1 for token in utterance if token.is_punct])
 
 def get_uppercase_count(utterance):
+    """
+    Gets the number of uppercase letters in an input SpaCy doc.
+
+    :utterance: SpaCy doc
+    :return: integer >= 0 for the number of uppercase letters.
+    """
     return sum(1 for c in utterance.text if c.isupper())
+
+def get_lowercase_count(utterance):
+    """
+    Gets the number of lowercase letters in an input SpaCy doc.
+
+    :utterance: SpaCy doc
+    :return: integer >= 0 for the number of lowercase letters.
+    """
+    return sum(1 for c in utterance.text if c.islower())
 
 class text_EDA():
 
