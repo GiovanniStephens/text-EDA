@@ -69,6 +69,9 @@ def get_punctuation_count(utterance):
     """
     return sum([1 for token in utterance if token.is_punct])
 
+def get_uppercase_count(utterance):
+    return sum(1 for c in utterance.text if c.isupper())
+
 class text_EDA():
 
     def __init__(self, utterances, pipes = ['entity_ruler', 'sentencizer']) -> None:
@@ -102,4 +105,4 @@ class text_EDA():
         self.data['Sentence Counts'] = list(map(get_sentence_count, self.nlp_utterances))
         self.data['Word Counts'] = list(map(get_word_count, self.nlp_utterances))
         self.data['Word Densities'] = list(map(get_word_density, self.nlp_utterances))
-        self.data['Punctuation Count'] = list(map(get_punctuation_count, self.nlp_utterances))
+        self.data['Punctuation Counts'] = list(map(get_punctuation_count, self.nlp_utterances))
