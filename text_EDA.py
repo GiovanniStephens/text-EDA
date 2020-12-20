@@ -87,6 +87,17 @@ def get_lowercase_count(utterance):
     """
     return sum(1 for c in utterance.text if c.islower())
 
+def get_case_ratio(utterance):
+    """Gets the ratio of uppercase letters to lowercase letters.
+
+    :utterance: SpaCy doc
+    :return: float >= 0 for the ratio of uppercase letters to lowercase letters.
+    """
+
+    uppercase = get_uppercase_count(utterance)
+    lowercase = get_lowercase_count(utterance)
+    return uppercase / (uppercase + lowercase)
+
 class text_EDA():
 
     def __init__(self, utterances, pipes = ['entity_ruler', 'sentencizer']) -> None:
