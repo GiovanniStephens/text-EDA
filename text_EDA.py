@@ -88,7 +88,7 @@ def get_lowercase_count(utterance):
     return sum(1 for c in utterance.text if c.islower())
 
 def get_case_ratio(utterance):
-    """Gets the ratio of uppercase letters to lowercase letters.
+    """Gets the ratio of uppercase letters.
 
     :utterance: SpaCy doc
     :return: float >= 0 for the ratio of uppercase letters to lowercase letters.
