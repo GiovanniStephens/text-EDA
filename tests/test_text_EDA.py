@@ -123,5 +123,12 @@ class test_embeddings(unittest.TestCase):
         self.assertEqual(text_EDA.get_punctuation_count(\
             explorer.nlp_utterances[6]), 1)
 
+    def test_explore_punctuation_count(self):
+        """Tests that the explore function is getting the punctuation counts"""
+        text_EDA = self._get_module('text_EDA')
+        explorer = text_EDA.text_EDA(TEST_UTTERANCES)
+        explorer.explore()
+        self.assertEqual(explorer.data['Punctuation Counts'].iloc[5], 2)
+
 if __name__ == '__main__':
     unittest.main()
