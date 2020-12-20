@@ -131,6 +131,7 @@ class test_embeddings(unittest.TestCase):
         self.assertEqual(explorer.data['Punctuation Counts'].iloc[5], 2)
 
     def test_get_uppercase_count(self):
+        """Tests that I get the right number of upper case letters."""
         text_EDA = self._get_module('text_EDA')
         explorer = text_EDA.text_EDA(TEST_UTTERANCES)
         explorer.explore()
