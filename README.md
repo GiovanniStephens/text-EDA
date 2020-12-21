@@ -3,14 +3,16 @@ This repo is for my text exploratory data analysis (EDA).
 
 # Things to include:
 - [x] Word counts (This can be done without SpaCy.)
-- [ ] Part of speech counts (SpaCy)
-- [ ] Number of documents 
+- [x] Part of speech counts (SpaCy)
+- <s>[ ] Number of documents </s>
 - [x] Number of sentences (SpaCy or another library)
-- [ ] Top N entities (SpaCy)
-- [ ] Top N part of speech and words (SpaCy)
+- [x] Top N entities (SpaCy)
+- [ ] Distribution of entity types (SpaCy)
+- [x] Top N part-of-speech words (SpaCy)
 - [x] Sentiment distribution from each document (NLTK)
-- [ ] Top bi-tri words (SpaCy or something else)
+- [x] Top bi-tri words (SpaCy or something else)
 - [ ] Top N Noun chunks (SpaCy)
+- [ ] Most salient key-words
 - [x] Word Density - Average length of the words used in the headline 
 - [x] Punctuation Count 
 - [x] Upper-Case to Lower-Case Words ratio - ratio of upper case words used and lower case words used in the text
