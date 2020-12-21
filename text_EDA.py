@@ -3,31 +3,20 @@ import embeddings
 import clustering
 import spacy
 import pandas as pd
-from deepsegment import DeepSegment
-segmenter = DeepSegment('en')
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 sid = SentimentIntensityAnalyzer()
 
 def split_into_sentences(utterance):
     """
-    Splits a string or SpaCy doc into sentences.
+    Splits a SpaCy doc into sentences.
     
     (You must include 'setencizer' in the SpaCy NLP pipeline 
     so that you can split the sentences out.)
     
-    :utterance: string of text or SpaCy doc
-    :return: list of strings or SpaCy spans of sentences.
+    :utterance: SpaCy doc
+    :return: list of SpaCy spans of sentences.
     """
-    if isinstance(utterance, str):
-        if len(utterance) < 1:
-            return ['']
-        elif len(utterance) > 200:
-            sents = segmenter.segment_long(utterance,n_window=10)
-        else:
-            sents = segmenter.segment(utterance)
-        return sents
-    else:
-        return [sentence for sentence in utterance.sents]
+    return [sentence for sentence in utterance.sents]
 
 def get_sentence_count(utterance):
     """
@@ -95,7 +84,6 @@ def get_case_ratio(utterance):
     :utterance: SpaCy doc
     :return: float >= 0 for the ratio of uppercase letters to lowercase letters.
     """
-
     uppercase = get_uppercase_count(utterance)
     lowercase = get_lowercase_count(utterance)
     return uppercase / (uppercase + lowercase)
@@ -113,10 +101,33 @@ def get_sentiment(utterance):
     """
     return sid.polarity_scores(utterance.text)['compound']
 
+def get_cluster_labels(utterances):
+    """
+    Calculates cluster labels for all the utterances. 
+    If there are few documents, I use PCA for dimension reduction and k-means
+    for clustering. If there are more than 100, I use UMAP and HDBSCAN together.
+
+    :utterances: list of strings
+    :return: list of integers indicating what cluster they belong to.
+    """
+    n_docs = len(utterances)
+    if n_docs <= 100:
+        document_embeddings = embeddings.pretrained_transformer_embeddings(utterances)
+        dims = min(clustering.get_optimal_n_components(document_embeddings), 10)
+        reduced = clustering.reduce_dimensions_pca(document_embeddings,\
+            dimensions=dims)
+        return clustering.kmeans_clustering(reduced,\
+            max_num_clusters=min(n_docs,80))
+    else:
+        document_embeddings = embeddings.word2vec_sif_embeddings(utterances,model_name=None)
+        reduced = clustering.reduce_dimensions_umap(document_embeddings)
+        return clustering.hdbscan_clustering(reduced)
+
 class text_EDA():
 
     def __init__(self, utterances, pipes = ['entity_ruler', 'sentencizer']) -> None:
             self.data = pd.DataFrame(utterances, columns=['Raw Utterances'])
+            self.top_features = None
             self.nlp_utterances = None
 
             # Load SpaCy model
@@ -149,3 +160,4 @@ class text_EDA():
         self.data['Punctuation Counts'] = list(map(get_punctuation_count, self.nlp_utterances))
         self.data['Case Ratios'] = list(map(get_case_ratio, self.nlp_utterances))
         self.data['Sentiments'] = list(map(get_sentiment, self.nlp_utterances))
+        self.data['Categories'] = get_cluster_labels(self.data['Raw Utterances'])
