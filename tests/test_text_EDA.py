@@ -180,6 +180,13 @@ class test_embeddings(unittest.TestCase):
         self.assertGreater(text_EDA.get_sentiment(\
             explorer.nlp_utterances[8]), 0)
 
+    def test_explore_get_sentiment_neg(self):
+        """Tests that the explore function is getting the case ratios correctly"""
+        text_EDA = self._get_module('text_EDA')
+        explorer = text_EDA.text_EDA(TEST_UTTERANCES)
+        explorer.explore()
+        self.assertLess(explorer.data['Sentiments'].iloc[7], 0)
+
 
 if __name__ == '__main__':
     unittest.main()
