@@ -165,6 +165,7 @@ class test_embeddings(unittest.TestCase):
         self.assertEqual(explorer.data['Case Ratios'].iloc[0], 1/19)
 
     def test_get_sentiment_neg(self):
+        """Tests the VADER sentiment analysis function on a negative phrase."""
         text_EDA = self._get_module('text_EDA')
         explorer = text_EDA.text_EDA(TEST_UTTERANCES)
         explorer.explore()
@@ -172,6 +173,7 @@ class test_embeddings(unittest.TestCase):
             explorer.nlp_utterances[7]), 0)
 
     def test_get_sentiment_pos(self):
+        """Tests the VADER sentiment analysis function on a positive phrase."""
         text_EDA = self._get_module('text_EDA')
         explorer = text_EDA.text_EDA(TEST_UTTERANCES)
         explorer.explore()
