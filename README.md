@@ -4,7 +4,7 @@ This repo is for my text exploratory data analysis (EDA).
 # Things to include:
 - [x] Word counts (This can be done without SpaCy.)
 - [x] Part of speech counts (SpaCy)
-- <s>[ ] Number of documents </s>
+- [ ] <s>Number of documents </s>
 - [x] Number of sentences (SpaCy or another library)
 - [x] Top N entities (SpaCy)
 - [ ] Distribution of entity types (SpaCy)
