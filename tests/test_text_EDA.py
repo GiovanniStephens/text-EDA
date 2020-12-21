@@ -13,6 +13,8 @@ TEST_UTTERANCES = (
     , 'Is this testing phrase going to put with the others?'
     , 'This is another testing phrase to be put together with the others.'
     , 'This testing phrase is similar.'
+    , 'John is my friend.'
+    , 'John works at Google with Mandy.'
 )
 
 class test_embeddings(unittest.TestCase):
@@ -178,9 +180,44 @@ class test_embeddings(unittest.TestCase):
         text_EDA = self._get_module('text_EDA')
         explorer = text_EDA.text_EDA(TEST_UTTERANCES[0:3])
         explorer.explore()
-        print(explorer.data)
         self.assertNotEqual(explorer.data['Categories'].iloc[0], \
             explorer.data['Categories'].iloc[2])
+
+    def test_get_top_words(self):
+        """Tests that I am correctly counting the top word. 
+        Is comes up 8 times."""
+        text_EDA = self._get_module('text_EDA')
+        explorer = text_EDA.text_EDA(TEST_UTTERANCES)
+        explorer.explore()
+        self.assertEqual(text_EDA.get_top_words(\
+            explorer.nlp_utterances)[0][1], 9)
+
+    def test_get_top_n_ngrams(self):
+        """Tests that I am correctly counting the top bi-grams. 
+        Is comes up 5 times."""
+        text_EDA = self._get_module('text_EDA')
+        explorer = text_EDA.text_EDA(TEST_UTTERANCES)
+        explorer.explore()
+        corpus = [utterance.text for utterance in explorer.nlp_utterances]
+        self.assertEqual(text_EDA.get_top_n_ngrams(corpus,N=2,n=20)[0][1],\
+            5)
+
+    def test_get_top_nouns(self):
+        """Tests that I am correctly counting the top nouns."""
+        text_EDA = self._get_module('text_EDA')
+        explorer = text_EDA.text_EDA(TEST_UTTERANCES)
+        explorer.explore()
+        corpus = [utterance.text for utterance in explorer.nlp_utterances]
+        self.assertEqual(text_EDA.get_top_pos(\
+            explorer.nlp_utterances, pos='NOUN', n=20)[0][1], 5)
+
+    def test_get_top_entities_person(self):
+        """Tests that I am correctly counting the top entities."""
+        text_EDA = self._get_module('text_EDA')
+        explorer = text_EDA.text_EDA(TEST_UTTERANCES)
+        explorer.explore()
+        self.assertEqual(text_EDA.get_top_entities(\
+            explorer.nlp_utterances, 'PERSON', 1)[0][0], 'John')
 
 if __name__ == '__main__':
     unittest.main()
