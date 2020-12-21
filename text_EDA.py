@@ -148,3 +148,4 @@ class text_EDA():
         self.data['Word Densities'] = list(map(get_word_density, self.nlp_utterances))
         self.data['Punctuation Counts'] = list(map(get_punctuation_count, self.nlp_utterances))
         self.data['Case Ratios'] = list(map(get_case_ratio, self.nlp_utterances))
+        self.data['Sentiments'] = list(map(get_sentiment, self.nlp_utterances))
