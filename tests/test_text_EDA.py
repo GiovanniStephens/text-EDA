@@ -14,7 +14,7 @@ TEST_UTTERANCES = (
     , 'This is another testing phrase to be put together with the others.'
     , 'This testing phrase is similar.'
     , 'John is my friend.'
-    , 'John works at Google with Mandy.'
+    , 'John works at Google with Mandy in Florida.'
 )
 
 class test_embeddings(unittest.TestCase):
@@ -218,6 +218,41 @@ class test_embeddings(unittest.TestCase):
         explorer.explore()
         self.assertEqual(text_EDA.get_top_entities(\
             explorer.nlp_utterances, ['PERSON'], 1)[0][0], 'John')
+
+    def test_explore_get_top_nouns(self):
+        """Tests that I am correctly counting the top nouns in the explore function."""
+        text_EDA = self._get_module('text_EDA')
+        explorer = text_EDA.text_EDA(TEST_UTTERANCES)
+        explorer.explore()
+        self.assertEqual(explorer.top_features['Top Nouns'].iloc[0], 'phrase')
+
+    def test_explore_get_top_words(self):
+        """Tests that I am correctly counting the top words in the explore function."""
+        text_EDA = self._get_module('text_EDA')
+        explorer = text_EDA.text_EDA(TEST_UTTERANCES)
+        explorer.explore()
+        self.assertEqual(explorer.top_features['Top Words'].iloc[0], 'is')
+
+    def test_explore_get_top_people(self):
+        """Tests that I am correctly counting the top people in the explore function."""
+        text_EDA = self._get_module('text_EDA')
+        explorer = text_EDA.text_EDA(TEST_UTTERANCES)
+        explorer.explore()
+        self.assertEqual(explorer.top_features['Top People'].iloc[0], 'John')
+
+    def test_explore_get_top_n_grams(self):
+        """Tests that I am correctly counting the top n-grams in the explore function."""
+        text_EDA = self._get_module('text_EDA')
+        explorer = text_EDA.text_EDA(TEST_UTTERANCES)
+        explorer.explore()
+        self.assertEqual(explorer.top_features['Top n-grams (2)'].iloc[0], 'this is')
+
+    def test_explore_get_top_locations(self):
+        """Tests that I am correctly counting the top locations in the explore function."""
+        text_EDA = self._get_module('text_EDA')
+        explorer = text_EDA.text_EDA(TEST_UTTERANCES)
+        explorer.explore()
+        self.assertEqual(explorer.top_features['Top Locations'].iloc[0], 'Florida')
 
 if __name__ == '__main__':
     unittest.main()
