@@ -5,6 +5,8 @@ import spacy
 import pandas as pd
 from deepsegment import DeepSegment
 segmenter = DeepSegment('en')
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
+sid = SentimentIntensityAnalyzer()
 
 def split_into_sentences(utterance):
     """
@@ -97,6 +99,19 @@ def get_case_ratio(utterance):
     uppercase = get_uppercase_count(utterance)
     lowercase = get_lowercase_count(utterance)
     return uppercase / (uppercase + lowercase)
+
+def get_sentiment(utterance):
+    """
+    Returns the sentiment polarity between -1 and 1 for how
+    negative or positive the utterance is. 
+
+    This function uses NLTK's VADER lexicon approach for getting the 
+    sentiment score.
+
+    :utterance: SpaCy doc
+    :return: -1 >= float <= 1 for utterance sentiment.
+    """
+    return sid.polarity_scores(utterance.text)['compound']
 
 class text_EDA():
 
