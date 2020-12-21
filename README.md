@@ -8,7 +8,7 @@ This repo is for my text exploratory data analysis (EDA).
 - [x] Number of sentences (SpaCy or another library)
 - [ ] Top N entities (SpaCy)
 - [ ] Top N part of speech and words (SpaCy)
-- [ ] Sentiment distribution from each document (NLTK)
+- [x] Sentiment distribution from each document (NLTK)
 - [ ] Common bi-tri words (SpaCy or something else)
 - [ ] Top N Noun chunks (SpaCy)
 - [x] Word Density - Average length of the words used in the headline 
