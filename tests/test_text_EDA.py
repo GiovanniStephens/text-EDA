@@ -10,6 +10,9 @@ TEST_UTTERANCES = (
     , 'He owes me $200 bucks!'
     , 'That conversation did not go well.'
     , 'I am pretty happy with that result.'
+    , 'Is this testing phrase going to put with the others?'
+    , 'This is another testing phrase to be put together with the others.'
+    , 'This testing phrase is similar.'
 )
 
 class test_embeddings(unittest.TestCase):
@@ -38,36 +41,20 @@ class test_embeddings(unittest.TestCase):
         self.assertEqual(text_EDA.get_word_count(\
             explorer.data['Raw Utterances'].iloc[0]), 5)
 
-    def test_split_into_sentences_str(self):
-        """Test deepsegment to split a string into parts."""
-        text_EDA = self._get_module('text_EDA')
-        sents = text_EDA.split_into_sentences(TEST_UTTERANCES[3])
-        self.assertEqual(len(sents), 2)
-
-    def test_split_into_sentences_str_2(self):
-        """Test deepsegment to split a string without punctuation into parts."""
-        text_EDA = self._get_module('text_EDA')
-        sents = text_EDA.split_into_sentences(TEST_UTTERANCES[4])
-        self.assertEqual(len(sents), 2)
-
     def test_split_into_sentences(self):
         """Test SpaCy's ability to split a string into parts."""
         text_EDA = self._get_module('text_EDA')
         explorer = text_EDA.text_EDA(TEST_UTTERANCES)
-        sents = text_EDA.split_into_sentences(explorer.data['Raw Utterances'].iloc[3])
+        explorer.explore()
+        sents = text_EDA.split_into_sentences(explorer.nlp_utterances[3])
         self.assertEqual(len(sents), 2)
-
-    def test_get_sentence_count_str(self):
-        """Test getting the sentence count from a string."""
-        text_EDA = self._get_module('text_EDA')
-        cnt = text_EDA.get_sentence_count(TEST_UTTERANCES[3])
-        self.assertEqual(cnt, 2)
 
     def test_get_sentence_count(self):
         """Test getting a sentence count from a SpaCy doc object."""
         text_EDA = self._get_module('text_EDA')
         explorer = text_EDA.text_EDA(TEST_UTTERANCES)
-        cnt = text_EDA.get_sentence_count(explorer.data['Raw Utterances'].iloc[3])
+        explorer.explore()
+        cnt = text_EDA.get_sentence_count(explorer.nlp_utterances[3])
         self.assertEqual(cnt, 2)
 
     def test_explore_sentence_count(self):
@@ -187,6 +174,13 @@ class test_embeddings(unittest.TestCase):
         explorer.explore()
         self.assertLess(explorer.data['Sentiments'].iloc[7], 0)
 
+    def test_labelling_documents(self):
+        text_EDA = self._get_module('text_EDA')
+        explorer = text_EDA.text_EDA(TEST_UTTERANCES[0:3])
+        explorer.explore()
+        print(explorer.data)
+        self.assertNotEqual(explorer.data['Categories'].iloc[0], \
+            explorer.data['Categories'].iloc[2])
 
 if __name__ == '__main__':
     unittest.main()
