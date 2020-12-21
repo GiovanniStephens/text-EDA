@@ -1,10 +1,11 @@
-import TextPreprocessing
 import embeddings
 import clustering
 import spacy
 import pandas as pd
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 sid = SentimentIntensityAnalyzer()
+from collections import Counter
+from sklearn.feature_extraction.text import CountVectorizer
 
 def split_into_sentences(utterance):
     """
@@ -123,6 +124,62 @@ def get_cluster_labels(utterances):
         reduced = clustering.reduce_dimensions_umap(document_embeddings)
         return clustering.hdbscan_clustering(reduced)
 
+def get_top_words(utterances, n = 20):
+    """
+    This function returns the top n words in a list SpaCy docs.
+
+    :utterances: list of SpaCy docs.
+    :return: 
+    """
+    words = []
+    for utterance in utterances:
+        for word in utterance:
+            if word.is_alpha:
+                words.append(word.text)
+    counter = Counter(words)
+    top_words = counter.most_common(n)  
+    return top_words
+
+def get_top_n_ngrams(corpus, N = 1, n=None):
+    """
+    This function gives the n top N-grams along with their counts in desc order. 
+    """
+
+    vec = CountVectorizer(ngram_range=(N, N)).fit(corpus)
+    bag_of_words = vec.transform(corpus)
+    sum_words = bag_of_words.sum(axis=0) 
+    words_freq = [(word, sum_words[0, idx]) for word, idx in vec.vocabulary_.items()]
+    words_freq =sorted(words_freq, key = lambda x: x[1], reverse=True)
+    return words_freq[:n]
+
+def get_top_pos(utterances, pos = 'VERB', n = 20):
+    """
+    This function takes a list of lists of word tokens, the type of phrase position
+    (i.e. verb, noun, etc.) and the n number of top words of the pos type. It goes through the
+    lists of lists, joins the tokens, and works out which words are of that pos. It will then 
+    count the number of occurances in that word. 
+    Returns lemma of top n words that are of type pos.
+    """
+
+    words = []
+    for utterance in utterances:
+        for word in utterance:
+            if word.pos_ == pos:
+                words.append(word.lemma_)
+    counter = Counter(words)
+    top_words = counter.most_common(n)  
+    return top_words
+
+def get_top_entities(utterances, entity_type, n = 20):
+    entities = []
+    for utterance in utterances:
+        for word in utterance:
+            if word.ent_type_ == entity_type:
+                entities.append(word.text)
+    counter = Counter(entities)
+    top_entities = counter.most_common(n)  
+    return top_entities
+
 class text_EDA():
 
     def __init__(self, utterances, pipes = ['entity_ruler', 'sentencizer']) -> None:
@@ -161,3 +218,29 @@ class text_EDA():
         self.data['Case Ratios'] = list(map(get_case_ratio, self.nlp_utterances))
         self.data['Sentiments'] = list(map(get_sentiment, self.nlp_utterances))
         self.data['Categories'] = get_cluster_labels(self.data['Raw Utterances'])
+
+        top_words = pd.DataFrame(get_top_words(self.nlp_utterances), \
+            columns=['Top Words', 'Top Words Counts'])
+        
+        n_grams = []
+        corpus = [utterance.text for utterance in self.nlp_utterances]
+        for n in range(1,3):
+            n_grams.append(pd.DataFrame(get_top_n_ngrams(corpus,N=n,n=20), columns=[f'Top n-grams ({n})', 'Top n-gram Counts']))
+
+        top_nouns = pd.DataFrame(get_top_pos(self.nlp_utterances, pos='NOUN', n=20),\
+            columns=['Top Nouns', 'Top Nouns Counts'])
+        top_verbs = pd.DataFrame(get_top_pos(self.nlp_utterances, pos='VERB', n=20),\
+            columns=['Top Verbs', 'Top Verbs Counts'])
+        top_people = pd.DataFrame(get_top_entities(self.nlp_utterances, 'PERSON', 20),\
+            columns=['Top People', 'Top People Counts'])
+        top_organisations = pd.DataFrame(get_top_entities(self.nlp_utterances, 'ORG', 20),\
+            columns=['Top Oraganisations', 'Top Oraganisations Counts'])
+
+        self.top_features = top_words
+        for n_gram in n_grams:
+            self.top_features = pd.concat([self.top_features, n_gram], axis=1)
+        self.top_features = pd.concat([self.top_features, top_nouns], axis=1)
+        self.top_features = pd.concat([self.top_features, top_verbs], axis=1)
+        self.top_features = pd.concat([self.top_features, top_people], axis=1)
+        self.top_features = pd.concat([self.top_features, top_organisations], axis=1)
+        
