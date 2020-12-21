@@ -14,3 +14,4 @@ This repo is for my text exploratory data analysis (EDA).
 - [x] Word Density - Average length of the words used in the headline 
 - [x] Punctuation Count 
 - [x] Upper-Case to Lower-Case Words ratio - ratio of upper case words used and lower case words used in the text
+- [x] Cluster labels to analyse things according to an unsupervised clustering of documents.
