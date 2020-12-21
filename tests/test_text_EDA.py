@@ -217,7 +217,7 @@ class test_embeddings(unittest.TestCase):
         explorer = text_EDA.text_EDA(TEST_UTTERANCES)
         explorer.explore()
         self.assertEqual(text_EDA.get_top_entities(\
-            explorer.nlp_utterances, 'PERSON', 1)[0][0], 'John')
+            explorer.nlp_utterances, ['PERSON'], 1)[0][0], 'John')
 
 if __name__ == '__main__':
     unittest.main()

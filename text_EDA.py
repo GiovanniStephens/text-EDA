@@ -170,11 +170,11 @@ def get_top_pos(utterances, pos = 'VERB', n = 20):
     top_words = counter.most_common(n)  
     return top_words
 
-def get_top_entities(utterances, entity_type, n = 20):
+def get_top_entities(utterances, entity_types, n = 20):
     entities = []
     for utterance in utterances:
         for word in utterance:
-            if word.ent_type_ == entity_type:
+            if word.ent_type_ in entity_types:
                 entities.append(word.text)
     counter = Counter(entities)
     top_entities = counter.most_common(n)  
@@ -231,10 +231,12 @@ class text_EDA():
             columns=['Top Nouns', 'Top Nouns Counts'])
         top_verbs = pd.DataFrame(get_top_pos(self.nlp_utterances, pos='VERB', n=20),\
             columns=['Top Verbs', 'Top Verbs Counts'])
-        top_people = pd.DataFrame(get_top_entities(self.nlp_utterances, 'PERSON', 20),\
+        top_people = pd.DataFrame(get_top_entities(self.nlp_utterances, ['PERSON'], 20),\
             columns=['Top People', 'Top People Counts'])
-        top_organisations = pd.DataFrame(get_top_entities(self.nlp_utterances, 'ORG', 20),\
+        top_organisations = pd.DataFrame(get_top_entities(self.nlp_utterances, ['ORG', 'NORP'], 20),\
             columns=['Top Oraganisations', 'Top Oraganisations Counts'])
+        top_locations = pd.DataFrame(get_top_entities(self.nlp_utterances, ['FAC', 'GPE', 'LOC'], 20),\
+            columns=['Top Locations', 'Top Locations Counts'])
 
         self.top_features = top_words
         for n_gram in n_grams:
@@ -243,4 +245,5 @@ class text_EDA():
         self.top_features = pd.concat([self.top_features, top_verbs], axis=1)
         self.top_features = pd.concat([self.top_features, top_people], axis=1)
         self.top_features = pd.concat([self.top_features, top_organisations], axis=1)
+        self.top_features = pd.concat([self.top_features, top_locations], axis=1)
         
