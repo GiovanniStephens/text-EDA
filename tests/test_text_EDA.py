@@ -155,5 +155,12 @@ class test_embeddings(unittest.TestCase):
         self.assertEqual(text_EDA.get_case_ratio(\
             explorer.nlp_utterances[0]), 1/19)
 
+    def test_explore_get_case_ratio(self):
+        """Tests that the explore function is getting the case ratios correctly"""
+        text_EDA = self._get_module('text_EDA')
+        explorer = text_EDA.text_EDA(TEST_UTTERANCES)
+        explorer.explore()
+        self.assertEqual(explorer.data['Case Ratios'].iloc[0], 1/19)
+
 if __name__ == '__main__':
     unittest.main()
