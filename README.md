@@ -11,8 +11,8 @@ This repo is for my text exploratory data analysis (EDA).
 - [x] Top N part-of-speech words (SpaCy)
 - [x] Sentiment distribution from each document (NLTK)
 - [x] Top bi-tri words (SpaCy or something else)
-- [ ] Top N Noun chunks (SpaCy)
-- [ ] Most salient key-words
+- [x] Top N Noun chunks (SpaCy)
+- [x] Most salient key-words
 - [x] Word Density - Average length of the words used in the headline 
 - [x] Punctuation Count 
 - [x] Upper-Case to Lower-Case Words ratio - ratio of upper case words used and lower case words used in the text
