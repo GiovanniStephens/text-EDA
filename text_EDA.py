@@ -181,6 +181,16 @@ def get_top_entities(utterances, entity_types, n = 20):
     top_entities = counter.most_common(n)  
     return top_entities
 
+def get_top_keywords(keywords, n = 20):
+    words = []
+    for doc_keywords in keywords:
+        for keyword in doc_keywords:
+            words.append(keyword.lemma_)
+    counter = Counter(words)
+    top_words = counter.most_common(n)  
+    return top_words
+
+
 class text_EDA():
 
     def __init__(self, utterances, pipes = ['entity_ruler', 'sentencizer', 'textrank']) -> None:
@@ -243,6 +253,8 @@ class text_EDA():
         top_locations = pd.DataFrame(get_top_entities(self.nlp_utterances, ['FAC', 'GPE', 'LOC'], 20),\
             columns=['Top Locations', 'Top Locations Counts'])
 
+        keyphrases_corpus = [[keyphrase.chunks[0] for keyphrase in utterance._.phrases] for utterance in self.nlp_utterances]
+        top_keyphrases = pd.DataFrame(get_top_keywords(keyphrases_corpus,n=20), columns=['Top Keyphrases', 'Top Keyphrases Counts'])
         self.top_features = top_words
         for n_gram in n_grams:
             self.top_features = pd.concat([self.top_features, n_gram], axis=1)
@@ -251,4 +263,4 @@ class text_EDA():
         self.top_features = pd.concat([self.top_features, top_people], axis=1)
         self.top_features = pd.concat([self.top_features, top_organisations], axis=1)
         self.top_features = pd.concat([self.top_features, top_locations], axis=1)
-        
+        self.top_features = pd.concat([self.top_features, top_keyphrases], axis=1)
