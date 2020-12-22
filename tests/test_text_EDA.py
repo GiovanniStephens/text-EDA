@@ -254,5 +254,12 @@ class test_embeddings(unittest.TestCase):
         explorer.explore()
         self.assertEqual(explorer.top_features['Top Locations'].iloc[0], 'Florida')
 
+    def test_explore_get_top_keyphrases(self):
+        """Tests that I am correctly counting the top keyphrases in the explore function."""
+        text_EDA = self._get_module('text_EDA')
+        explorer = text_EDA.text_EDA(TEST_UTTERANCES)
+        explorer.explore()
+        self.assertEqual(explorer.top_features['Top Keyphrases'].iloc[0], '-PRON-')
+
 if __name__ == '__main__':
     unittest.main()
