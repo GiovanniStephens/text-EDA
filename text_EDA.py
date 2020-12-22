@@ -1,6 +1,7 @@
 import embeddings
 import clustering
 import spacy
+import pytextrank
 import pandas as pd
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 sid = SentimentIntensityAnalyzer()
@@ -182,7 +183,7 @@ def get_top_entities(utterances, entity_types, n = 20):
 
 class text_EDA():
 
-    def __init__(self, utterances, pipes = ['entity_ruler', 'sentencizer']) -> None:
+    def __init__(self, utterances, pipes = ['entity_ruler', 'sentencizer', 'textrank']) -> None:
             self.data = pd.DataFrame(utterances, columns=['Raw Utterances'])
             self.top_features = None
             self.nlp_utterances = None
@@ -202,10 +203,14 @@ class text_EDA():
         """
 
         for pipe in pipes:
-            nlp_pipe = self.nlp.create_pipe(pipe)
             if pipe == 'sentencizer': #needs to go before the parser. 
+                nlp_pipe = self.nlp.create_pipe(pipe)
                 self.nlp.add_pipe(nlp_pipe, before='parser')
+            elif pipe == 'textrank':
+                tr = pytextrank.TextRank()
+                self.nlp.add_pipe(tr.PipelineComponent, name=pipe, last=True)
             else:
+                nlp_pipe = self.nlp.create_pipe(pipe)
                 self.nlp.add_pipe(nlp_pipe)
 
     def explore(self):

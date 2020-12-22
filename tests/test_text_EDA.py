@@ -28,7 +28,7 @@ class test_embeddings(unittest.TestCase):
         text_EDA = self._get_module('text_EDA')
         explorer = text_EDA.text_EDA(TEST_UTTERANCES)
         self.assertEqual(explorer.nlp.pipe_names, \
-             ['tagger', 'sentencizer', 'parser', 'ner', 'entity_ruler']) 
+             ['tagger', 'sentencizer', 'parser', 'ner', 'entity_ruler', 'textrank']) 
 
     def test_get_word_count_str(self):
         """Tests that we're getting the right word count from a string."""
