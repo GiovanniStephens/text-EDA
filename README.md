@@ -17,3 +17,6 @@ This repo is for my text exploratory data analysis (EDA).
 - [x] Punctuation Count 
 - [x] Upper-Case to Lower-Case Words ratio - ratio of upper case words used and lower case words used in the text
 - [x] Cluster labels to analyse things according to an unsupervised clustering of documents.
+
+# To-do
+1. [ ] Update the eda to include all the extracted features for each documents at a row level. Just comma-separate them. That way, when pulling the data into a visualisation tool like Power BI, you can simply word cloud the column by category to get category split features. (e.g. all keyphrases by category)
