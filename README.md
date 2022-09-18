@@ -1,5 +1,5 @@
 # text-EDA
-This repo is for my text exploratory data analysis (EDA).
+This repo is for my text exploratory data analysis (EDA). it is currently not being maintained or used. it will need some love before it is handy again. 
 
 # Things to include:
 - [x] Word counts (This can be done without SpaCy.)
@@ -20,3 +20,4 @@ This repo is for my text exploratory data analysis (EDA).
 
 # To-do
 1. [ ] Update the eda to include all the extracted features for each documents at a row level. Just comma-separate them. That way, when pulling the data into a visualisation tool like Power BI, you can simply word cloud the column by category to get category split features. (e.g. all keyphrases by category)
+2. [ ] Something to do with topic modelling. 
